@@ -8,7 +8,7 @@ import tensorflow as tf
 
 import model, sample, encoder
 
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
 
@@ -74,8 +74,8 @@ def interact_model(
         ckpt = tf.train.latest_checkpoint(os.path.join(models_dir, model_name))
         saver.restore(sess, ckpt)
 
-        def getSample():    
-            raw_text = "Hello World"
+        def getSample(prompt = "Hello World"):    
+            raw_text = prompt
             context_tokens = enc.encode(raw_text)
             generated = 0
             for _ in range(nsamples // batch_size):
@@ -90,11 +90,17 @@ def interact_model(
         
         @app.route('/sample')
         def serveSample():
-            return getSample()
+            prompt = request.args.get('prompt')
+            #TODO(Brian): this doesn't work
+            # Figure out some other way to fail gracefully if input not provided
+            if (prompt == ""):
+                prompt = "Hello World"
+            
+            return getSample(prompt)
 
         @app.route('/')
         def index():
-            return 'Hello World'
+            return 'API server is up'
 
         app.run()
 
