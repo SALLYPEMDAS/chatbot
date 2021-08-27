@@ -21,11 +21,11 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def interact_model(
-    model_name='355M',
+    model_name='774M',
     seed=None,
     nsamples=1,
     batch_size=1,
-    length=64,
+    length=32,
     temperature=1,
     top_k=0,
     top_p=1,
