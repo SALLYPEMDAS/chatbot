@@ -33,3 +33,14 @@ ul li {
   padding: 0 0 16px;
   display: flex;
 }
+
+.loading {
+  background-size: 64px;
+  background-image: url('./assets/spinner.gif');
+  background-repeat: no-repeat;
+}
+
+.spinner {
+  height: 64px;
+  width: 64px;
+}

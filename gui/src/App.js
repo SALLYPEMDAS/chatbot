@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
+import Spinner from './Spinner'
+
 
 
 
@@ -10,6 +12,7 @@ class App extends React.Component {
     this.state = {
       prompt: '',
       samples: [],
+      isLoading: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,9 +27,12 @@ class App extends React.Component {
 
   handleSubmit(e){
     e.preventDefault();
-
-    axios.get(`http://localhost:5000/sample?prompt=${this.state.prompt}`)
+    this.setState({isLoading: true});
+    const prompt = this.state.prompt;
+    this.setState({prompt: ''});
+    axios.get(`http://localhost:5000/sample?prompt=${prompt}`)
   .then( (response) => {
+    this.setState({isLoading: false});
     console.log(response);
     this.setState({samples: [...this.state.samples, response.data]})
   })
@@ -34,17 +40,13 @@ class App extends React.Component {
     console.log(error);
   });
 
-
-    this.setState({
-      prompt: ''
-    });
-
   }
 
   render(){
     const samples = this.state.samples.map((sample) => 
               <li key={sample}>{sample}</li>
          );
+
     return (
       <div className="App">
         <header className="App-header">
@@ -52,12 +54,12 @@ class App extends React.Component {
           
         </header>
          
-         
           
         <ul>{samples}</ul>
-
+        
         <form onSubmit={this.handleSubmit}>
-          <textarea onChange={this.handleChange} />
+          <Spinner loading={this.state.isLoading}/>
+          <textarea onChange={this.handleChange} value={this.state.prompt}/>
 
           <input type="submit" />
         </form>
