@@ -8,6 +8,11 @@ import tensorflow as tf
 
 import model, sample, encoder
 
+from flask import Flask
+app = Flask(__name__)
+
+
+
 def interact_model(
     model_name='355M',
     seed=None,
@@ -69,11 +74,8 @@ def interact_model(
         ckpt = tf.train.latest_checkpoint(os.path.join(models_dir, model_name))
         saver.restore(sess, ckpt)
 
-        while True:
-            raw_text = input("Model prompt >>> ")
-            while not raw_text:
-                print('Prompt should not be empty!')
-                raw_text = input("Model prompt >>> ")
+        def getSample():    
+            raw_text = "Hello World"
             context_tokens = enc.encode(raw_text)
             generated = 0
             for _ in range(nsamples // batch_size):
@@ -84,8 +86,17 @@ def interact_model(
                     generated += 1
                     text = enc.decode(out[i])
                     print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
-                    print(text)
-            print("=" * 80)
+                    return raw_text + " " + text;
+        
+        @app.route('/sample')
+        def serveSample():
+            return getSample()
+
+        @app.route('/')
+        def index():
+            return 'Hello World'
+
+        app.run()
 
 if __name__ == '__main__':
     fire.Fire(interact_model)
