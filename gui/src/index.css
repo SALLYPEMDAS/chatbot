@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+form {
+  display: flex;
+}
+
+form textarea {
+  display: flex;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ul li {
+  font-size: 60%;
+  border-bottom: solid 1px #ccc;
+  list-style-type: none;
+  margin: 16px;
+  padding: 16px;
+  display: flex;
+}

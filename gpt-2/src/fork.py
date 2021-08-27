@@ -9,7 +9,14 @@ import tensorflow as tf
 import model, sample, encoder
 
 from flask import Flask, request
+
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
 
 
 
@@ -85,20 +92,20 @@ def interact_model(
                 for i in range(batch_size):
                     generated += 1
                     text = enc.decode(out[i])
-                    print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
-                    return raw_text + " " + text;
+                    return raw_text + text;
         
         @app.route('/sample')
+        @cross_origin()
         def serveSample():
             prompt = request.args.get('prompt')
-            #TODO(Brian): this doesn't work
-            # Figure out some other way to fail gracefully if input not provided
+
             if (prompt == ""):
                 prompt = "Hello World"
             
             return getSample(prompt)
 
         @app.route('/')
+        @cross_origin()
         def index():
             return 'API server is up'
 

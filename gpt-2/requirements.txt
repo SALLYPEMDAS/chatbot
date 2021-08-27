@@ -5,3 +5,4 @@ tqdm==4.31.1
 tensorflow==1.13.2
 
 flask
+flask-cors
