@@ -25,43 +25,49 @@ class App extends React.Component {
     });
   }
 
+  querySample(prompt) {
+    this.setState({isLoading: true});
+    axios.get(`http://localhost:5000/sample?prompt=${prompt}`)
+    .then( (response) => {
+      this.setState({isLoading: false});
+      console.log(response);
+      this.setState({samples: [...this.state.samples, 
+        { prompt: prompt, 
+        body: response.data}]})
+    })
+    .catch( (error) => {
+      console.log(error);
+    });
+  }
+
   handleSubmit(e){
     e.preventDefault();
-    this.setState({isLoading: true});
     const prompt = this.state.prompt;
     this.setState({prompt: ''});
-    axios.get(`http://localhost:5000/sample?prompt=${prompt}`)
-  .then( (response) => {
-    this.setState({isLoading: false});
-    console.log(response);
-    this.setState({samples: [...this.state.samples, response.data]})
-  })
-  .catch( (error) => {
-    console.log(error);
-  });
-
+    this.querySample(prompt);
   }
 
   render(){
     const samples = this.state.samples.map((sample) => 
-              <li key={sample}>{sample}</li>
+              <li key={sample}>
+                <button disabled={this.state.isLoading} className="prompt" onClick={() => this.querySample(sample.prompt)}>{sample.prompt}</button>
+                <p> { sample.body } </p>
+                </li>
          );
 
     return (
       <div className="App">
         <header className="App-header">
           <h1>genpad</h1>
-          
         </header>
          
-          
         <ul>{samples}</ul>
         
         <form onSubmit={this.handleSubmit}>
           <Spinner loading={this.state.isLoading}/>
           <textarea onChange={this.handleChange} value={this.state.prompt}/>
 
-          <input type="submit" />
+          <input disabled={this.state.isLoading} type="submit" />
         </form>
       </div>
     );
