@@ -43,6 +43,22 @@ psql (13.4)
 Type "help" for help.
 
 postgres=# CREATE ROLE genpad WITH LOGIN PASSWORD 'secretPassword'
+CREATE ROLE
+postgres=# CREATE DATABASE genpad;
+CREATE DATABASE
+postgres=# GRANT ALL PRIVILEGES ON DATABASE genpad TO genpad;
+GRANT
 ```
 
 Copy `config.default` to `config` and update with your secret postgres password
+
+run migrations
+```
+alembic upgrade head  
+```
+
+generate new migration
+
+```
+alembic revision -m "add samples table"
+```

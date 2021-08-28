@@ -6,3 +6,9 @@ tensorflow==1.13.2
 
 flask
 flask-cors
+
+configparser
+
+psycopg2
+sqlalchemy
+alembic

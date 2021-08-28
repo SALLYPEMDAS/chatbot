@@ -12,11 +12,23 @@ from flask import Flask, request
 
 from flask_cors import CORS, cross_origin
 
+import configparser
+
+import psycopg2
+
+
+config = configparser.ConfigParser()
+config.read('config')
+
+p = 'POSTGRES'
+print(config['POSTGRES']['Password'])
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-
+conn = psycopg2.connect(host=config[p]['Host'], port = config[p]["Port"], database=config[p]["Database"], user=config[p]['User'], password=config[p]['Password'])
+cur = conn.cursor()
 
 
 
@@ -92,7 +104,13 @@ def interact_model(
                 for i in range(batch_size):
                     generated += 1
                     text = enc.decode(out[i])
-                    return raw_text + text;
+                    sample = raw_text + text
+                    cur.execute("INSERT INTO samples (prompt, sample) VALUES (%s, %s)", (prompt, sample))
+                    conn.commit()
+                    
+                    return sample;
+                
+                
         
         @app.route('/sample')
         @cross_origin()
