@@ -1,2 +1,6 @@
 [POSTGRES]
+Host = localhost
+Port = 5432
+Database = genpad
+User = genpad
 Password = secretPassword
