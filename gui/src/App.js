@@ -61,7 +61,7 @@ class App extends React.Component {
           <h1>genpad</h1>
         </header>
          
-        <ul>{samples}</ul>
+        <ul ClassName="samples">{samples}</ul>
         
         <form onSubmit={this.handleSubmit}>
           <Spinner loading={this.state.isLoading}/>

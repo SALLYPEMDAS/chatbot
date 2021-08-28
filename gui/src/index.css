@@ -51,3 +51,7 @@ button.prompt {
   margin-bottom: 12px;
   cursor: pointer;
 }
+
+.samples p {
+  width: 100%;
+}
