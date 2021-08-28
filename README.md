@@ -28,3 +28,21 @@ brew link --force company/team/python@3.7.9
 
 https://stackoverflow.com/a/64600841
 
+
+Postgres on the mac:
+
+```
+brew install postgresql
+brew services start postgresql
+```
+
+```
+➜  ~ psql postgres
+
+psql (13.4)
+Type "help" for help.
+
+postgres=# CREATE ROLE genpad WITH LOGIN PASSWORD 'secretPassword'
+```
+
+Copy `config.default` to `config` and update with your secret postgres password
