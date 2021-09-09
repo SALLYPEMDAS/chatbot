@@ -33,6 +33,7 @@ ul li {
   padding: 0 0 16px;
   display: flex;
   flex-wrap: wrap;
+  white-space: pre-wrap;
 }
 
 .loading {
@@ -55,3 +56,4 @@ button.prompt {
 .samples p {
   width: 100%;
 }
+
